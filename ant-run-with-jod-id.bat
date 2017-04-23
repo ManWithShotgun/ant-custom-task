@@ -1,0 +1,1 @@
+call ant -Djob.id=x3q4hkj97zwp4 -buildfile ant\build.xml -listener org.apache.tools.ant.listener.Log4jListener -lib target\ant-custom-task-1.0-SNAPSHOT-jar-with-dependencies.jar

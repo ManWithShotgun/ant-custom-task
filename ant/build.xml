@@ -1,0 +1,46 @@
+<project basedir="." default="call-custom-task">
+    <property name="input.dir" location="input"/>
+    <property name="temp.dir" location="temp"/>
+    <property name="custom-task.build" value="custom-task/build.xml"/>
+    <property name="custom-task.dir" value="custom-task"/>
+    <property name="artifact-zip" value="../target/ant-custom-task-1.0-SNAPSHOT-artifactToZip.zip"/>
+
+    <property name="xml.pattern" value="**/*.xml"/>
+    <property name="html.pattern" value="**/*.html"/>
+    <property name="xhtml.pattern" value="**/*.xhtml"/>
+    <property name="png.pattern" value="**/*.png"/>
+    <property name="zip.pattern" value="**/*.zip"/>
+
+    <target name="clean">
+        <delete dir="${temp.dir}"/>
+        <delete dir="${custom-task.dir}"/>
+    </target>
+
+    <target name="unzip-artifact">
+        <unzip dest="${custom-task.dir}" src="${artifact-zip}"/>
+    </target>
+
+    <target name="init" depends="clean">
+        <mkdir dir="${temp.dir}"/>
+    </target>
+
+    <target name="input-unzip-temp" depends="clean">
+        <unzip dest="${temp.dir}" overwrite="true">
+            <fileset dir="${input.dir}">
+                <include name="**/*.zip"/>
+            </fileset>
+            <patternset>
+                <include name="${xml.pattern}"/>
+                <include name="${html.pattern}"/>
+                <include name="${xhtml.pattern}"/>
+                <include name="${png.pattern}"/>
+            </patternset>
+            <mapper type="flatten"/>
+        </unzip>
+    </target>
+
+    <target name="call-custom-task" depends="input-unzip-temp, unzip-artifact">
+        <ant antfile="${custom-task.build}"/>
+    </target>
+
+</project>

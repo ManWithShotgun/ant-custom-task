@@ -1,0 +1,32 @@
+<project basedir="../" default="postfix">
+    <property name="input.dir" location="input"/>
+    <property name="output.dir" location="output"/>
+    <property name="temp.dir" location="temp"/>
+    <property name="postfix.classpath" value="lib-ext/ant-custom-task-1.0-SNAPSHOT-artifactToZip.zip"/>
+
+    <!-- If user not set -Djob.id=value then job.id="" (empty) -->
+    <condition property="job.id" value="">
+        <not>
+            <isset property="job.id"/>
+        </not>
+    </condition>
+
+    <property name="xml.pattern" value="**/*.xml"/>
+    <property name="html.pattern" value="**/*.html"/>
+    <property name="xhtml.pattern" value="**/*.xhtml"/>
+    <property name="png.pattern" value="**/*.png"/>
+    <property name="zip.pattern" value="**/*.zip"/>
+
+    <target name="postfix">
+        <taskdef name="postfix" classname="ru.ilia.PostfixZipFiles" classpath="${postfix.classpath}" loaderref="ant.coreLoader"/>
+        <postfix location="${temp.dir}" jobid="${job.id}">
+            <fileset dir="${temp.dir}">
+                <include name="${xml.pattern}"/>
+                <include name="${html.pattern}"/>
+                <include name="${xhtml.pattern}"/>
+                <include name="${png.pattern}"/>
+            </fileset>
+        </postfix>
+    </target>
+
+</project>
